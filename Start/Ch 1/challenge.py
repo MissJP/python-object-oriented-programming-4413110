@@ -10,7 +10,16 @@
 # of "Ticker: Company -- $Price"
 
 class Stock:
-    pass
+    def __init__(self, ticker, price, company):
+        self.ticker = str(ticker)
+        self.price = float(price)
+        self.company = str(company)
+
+    def get_description(self):
+        if (not isinstance(self, Stock)):
+            return ValueError('There is no such Stock')
+        return str(f'{self.ticker}: {self.company} -- ${self.price}')
+
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
 msft = Stock("MSFT", 342.0, "Microsoft Corp")
