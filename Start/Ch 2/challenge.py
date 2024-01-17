@@ -3,24 +3,42 @@
 
 # Challenge: create a class structure to represent stocks and bonds
 # Requirements:
-# -- Both stocks and bonds have a price
-# -- Stocks have a company name and ticker
-# -- Bonds have a description, duration, and yield
-# -- You should not be able to instantiate the base class
-# -- Subclasses are required to override get_description()
-# -- get_description returns formats for stocks and bonds
-# For stocks: "Ticker: Company -- $Price"
-# For bonds: "description: duration'yr' : $price : yieldamt%"
+# DONE -- Both stocks and bonds have a price
+# DONE -- Stocks have a company name and ticker
+# DONE -- Bonds have a description, duration, and yield
+# DONE -- You should not be able to instantiate the base class
+# DONE -- Subclasses are required to override get_description()
+# DONE -- get_description returns formats for stocks and bonds
+# DONE For stocks: "Ticker: Company -- $Price"
+# DONE For bonds: "description: duration'yr' : $price : yieldamt%"
+from abc import ABC, abstractmethod
 
-class Asset():
-    pass
+class Asset(ABC):
+    def __init__(self):
+        super().__init__()
 
-class Stock():
-    pass
+    @abstractmethod
+    def get_description(self):
+        pass
+    
+class Stock(Asset):
+    def __init__(self, ticker, price, company):
+        self.ticker = ticker
+        self.price = price
+        self.company = company
 
-class Bond():
-    pass
+    def get_description(self):
+        return f'{self.ticker}: {self.company} -- ${self.price}'
 
+class Bond(Asset):
+    def __init__(self, price, description, duration, interestrate):
+        self.price = price
+        self.description = description
+        self.duration = duration
+        self.interestrate = interestrate
+
+    def get_description(self):
+        return f"{self.description}: {self.duration}'yr' : ${self.price} : {self.interestrate}%"
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
 try:
@@ -42,7 +60,7 @@ print(msft.get_description())
 print(goog.get_description())
 print(meta.get_description())
 print(amzn.get_description())
-
+print('\n')
 print(us30yr.get_description())
 print(us10yr.get_description())
 print(us5yr.get_description())
