@@ -4,7 +4,8 @@
 # Challenge: use a magic method to make stocks and bonds sortable
 # Stocks should sort from low to high on price
 # Bonds should sort from low to high on yield
-
+# For stocks: "Ticker: Company -- $Price"
+# For bonds: "description: duration'yr' : $price : yieldamt%"
 from abc import ABC, abstractmethod
 
 
@@ -22,6 +23,21 @@ class Stock(Asset):
         super().__init__(price)
         self.company = company
         self.ticker = ticker
+    
+    def __str__(self):
+        return f'{self.ticker}: {self.company} -- ${self.price}'
+
+    def __ge__(self, value):
+        if not isinstance(value, Stock):
+            raise ValueError("Cannot compare stock to other asset")
+        return self.price >= value.price
+    
+    def __lt__(self, value):
+        if not isinstance(value, Stock):
+            raise ValueError("Cannot compare stock to other asset")
+        return self.price < value.price
+
+
 
 
 class Bond(Asset):
@@ -31,7 +47,18 @@ class Bond(Asset):
         self.duration = duration
         self.yieldamt = yieldamt
 
+    def __str__(self):
+        return f"{self.description}: {self.duration}'yr' : ${self.price} : {self.yieldamt}%"
 
+    def __ge__(self, value):
+        if not isinstance(value, Bond):
+            raise ValueError("Cannot compare bonds to other asset")
+        return self.yieldamt >= value.yieldamt
+    
+    def __lt__(self, value):
+        if not isinstance(value, Bond):
+            raise ValueError("Cannot compare bonds to other asset")
+        return self.yieldamt < value.yieldamt
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
 stocks = [
     Stock("MSFT", 342.0, "Microsoft Corp"),
